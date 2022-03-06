@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  selenium:
+    image: selenium/standalone-firefox
+    ports:
+    - 4444:4444
+    restart: always
+
+  app:
+    build:
+      context: .
+    volumes:
+     - ./app:/app
+    command: sh -c "python3 bot.py db selenium"
+    depends_on:
+     - selenium
+     - db
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
