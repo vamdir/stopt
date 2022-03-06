@@ -29,6 +29,7 @@ try:
     for table_row in table_rows:
         strike_row = table_row.find_elements(By.TAG_NAME,"td")
         postgres.persist_strike_row(conn,strike_row,updated_time,dbhost)
+        print(f'inserting strike: {strike_row[11]}')
 
 finally:
     if conn is not None: conn.close()
